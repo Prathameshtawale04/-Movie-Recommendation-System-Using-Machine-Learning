@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - MovieFlix{% endblock %}
+
+{% block content %}
+<div class="auth-page-wrapper">
+  <div class="auth-cinematic-backdrop"></div>
+  <div class="auth-glass-panel">
+    <div class="auth-header-block">
+      <h1 class="auth-title">Sign In</h1>
+      <p class="auth-desc">Welcome back to your personalized cinema catalog.</p>
+    </div>
+    
+    <form action="{{ url_for('login') }}" method="POST" class="auth-form" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+      {% endif %}
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="your.email@example.com"
+          value="{{ email if email is defined else '' }}"
+          required
+          autofocus
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="Enter your password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block auth-submit-btn">
+        Sign In to MovieFlix
+      </button>
+    </form>
+
+    <div class="auth-footer-block">
+      <p class="auth-switch-text">
+        New to MovieFlix? 
+        <a href="{{ url_for('register') }}" class="auth-accent-link">Sign up now</a>
+      </p>
+      <p class="auth-security-note">
+        Protected with Flask-WTF CSRF verification and PBKDF2/scrypt cryptographic hashing.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

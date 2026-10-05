@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 750" width="500" height="750">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141414" />
+      <stop offset="50%" stop-color="#1f1f1f" />
+      <stop offset="100%" stop-color="#0a0a0a" />
+    </linearGradient>
+    <linearGradient id="redAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E50914" />
+      <stop offset="100%" stop-color="#B81D24" />
+    </linearGradient>
+    <linearGradient id="borderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#333333" />
+      <stop offset="100%" stop-color="#1a1a1a" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="500" height="750" fill="url(#bg)" rx="8" />
+  <rect x="8" y="8" width="484" height="734" fill="none" stroke="url(#borderGlow)" stroke-width="2" rx="6" />
+
+  <!-- Subtle Film Reel / Strip Motifs -->
+  <g opacity="0.12" fill="#FFFFFF">
+    <rect x="25" y="40" width="20" height="25" rx="3" />
+    <rect x="25" y="85" width="20" height="25" rx="3" />
+    <rect x="25" y="130" width="20" height="25" rx="3" />
+    <rect x="25" y="175" width="20" height="25" rx="3" />
+    <rect x="25" y="220" width="20" height="25" rx="3" />
+    <rect x="25" y="265" width="20" height="25" rx="3" />
+    <rect x="25" y="310" width="20" height="25" rx="3" />
+    <rect x="25" y="355" width="20" height="25" rx="3" />
+    <rect x="25" y="400" width="20" height="25" rx="3" />
+    <rect x="25" y="445" width="20" height="25" rx="3" />
+    <rect x="25" y="490" width="20" height="25" rx="3" />
+    <rect x="25" y="535" width="20" height="25" rx="3" />
+    <rect x="25" y="580" width="20" height="25" rx="3" />
+    <rect x="25" y="625" width="20" height="25" rx="3" />
+    <rect x="25" y="670" width="20" height="25" rx="3" />
+
+    <rect x="455" y="40" width="20" height="25" rx="3" />
+    <rect x="455" y="85" width="20" height="25" rx="3" />
+    <rect x="455" y="130" width="20" height="25" rx="3" />
+    <rect x="455" y="175" width="20" height="25" rx="3" />
+    <rect x="455" y="220" width="20" height="25" rx="3" />
+    <rect x="455" y="265" width="20" height="25" rx="3" />
+    <rect x="455" y="310" width="20" height="25" rx="3" />
+    <rect x="455" y="355" width="20" height="25" rx="3" />
+    <rect x="455" y="400" width="20" height="25" rx="3" />
+    <rect x="455" y="445" width="20" height="25" rx="3" />
+    <rect x="455" y="490" width="20" height="25" rx="3" />
+    <rect x="455" y="535" width="20" height="25" rx="3" />
+    <rect x="455" y="580" width="20" height="25" rx="3" />
+    <rect x="455" y="625" width="20" height="25" rx="3" />
+    <rect x="455" y="670" width="20" height="25" rx="3" />
+  </g>
+
+  <!-- Central Movie Clapper / Reel Icon -->
+  <g transform="translate(170, 220)">
+    <!-- Clapperboard Body -->
+    <rect x="0" y="45" width="160" height="110" rx="10" fill="#222222" stroke="#444444" stroke-width="2" />
+    <!-- Clapperboard Top Strip -->
+    <path d="M 0,35 L 160,15 L 160,45 L 0,45 Z" fill="url(#redAccent)" />
+    <!-- White diagonal stripes on top -->
+    <polygon points="20,45 35,45 60,28 45,28" fill="#FFFFFF" opacity="0.9" />
+    <polygon points="70,45 85,45 110,21 95,21" fill="#FFFFFF" opacity="0.9" />
+    <polygon points="120,45 135,45 155,16 140,16" fill="#FFFFFF" opacity="0.9" />
+    <!-- Play Triangle in clapper center -->
+    <polygon points="65,75 105,100 65,125" fill="#FFFFFF" opacity="0.75" />
+  </g>
+
+  <!-- Brand & Status Text -->
+  <!-- MovieFlix Brand -->
+  <text x="250" y="440" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="28" fill="#E50914" letter-spacing="4" text-anchor="middle">
+    MOVIEFLIX
+  </text>
+
+  <!-- Description -->
+  <text x="250" y="480" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="20" fill="#E0E0E0" letter-spacing="1" text-anchor="middle">
+    NO POSTER AVAILABLE
+  </text>
+  <text x="250" y="510" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400" font-size="14" fill="#777777" letter-spacing="0.5" text-anchor="middle">
+    Image preview currently unavailable
+  </text>
+</svg>

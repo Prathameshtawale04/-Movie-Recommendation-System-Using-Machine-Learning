@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Lost in the Cinema Reel - MovieFlix{% endblock %}
+
+{% block content %}
+<div class="error-page-wrapper">
+  <div class="error-card-panel">
+    <div class="error-giant-badge">404</div>
+    <h1 class="error-heading">Lost in the Reel</h1>
+    <p class="error-subheading">
+      {{ message if message else 'The cinematic sequence or movie title you were looking for is not in our catalog or has vanished from the screening room.' }}
+    </p>
+    <div class="error-actions-block">
+      <a href="{{ url_for('index') }}" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Return to Home Theater
+      </a>
+      <a href="{{ url_for('search') }}" class="btn btn-outline" style="margin-left: 0.75rem;">
+        Search Movies
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

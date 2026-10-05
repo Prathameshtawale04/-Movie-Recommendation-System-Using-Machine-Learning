@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "username": "test_cinephile_99",
+    "email": "cinephile99@example.com",
+    "password_hash": "scrypt:32768:8:1$cJzMRpuUDmnaGz9H$ab9f1a552a47364e223dafbf282506a8d92b0d5569692bed142bbf899f937b3a9eb7b967c24dab02bfadccb9238af5ec20ee28642c5daeffc38fbfa91db660b2",
+    "full_name": "Test User"
+  },
+  {
+    "id": 2,
+    "username": "wrong_pw_user",
+    "email": "wrong_pw@example.com",
+    "password_hash": "scrypt:32768:8:1$WKFOeA8yoIWTz6VX$ee70b7cdb9cdd0f25ff121fc372152016743f911591fdaa8b631eaf6b787b699d7a743dde0264c37e47250b085a8b72a495661f775773b9b7551112f0fe276a5",
+    "full_name": "Wrong Password User"
+  },
+  {
+    "id": 3,
+    "username": "cinephile_f0db9792",
+    "email": "cinephile_f0db9792@example.com",
+    "password_hash": "scrypt:32768:8:1$3SnQun0eH7GKJIni$5c799c5e78e2f1b6a7e2825b2149d310fc531324555178e31eebf8fbb11049b59a8e68fe4126dd3941eddf79583f09b1153ed50d34f2ef6404afaa5640e201d0",
+    "full_name": "Test User"
+  },
+  {
+    "id": 4,
+    "username": "wrong_pw_e59e4a6b",
+    "email": "wrong_pw_e59e4a6b@example.com",
+    "password_hash": "scrypt:32768:8:1$0h8wttS6INpgOrtB$70d47a14f02d1cab28c79206596f2f4a8f7656c709fdaca21e4c28503d777f8fe2422e75842c8bc13f281324782c8b5f06d0888ec78a959968f7ba149cb4eda1",
+    "full_name": "Wrong Password User"
+  },
+  {
+    "id": 5,
+    "username": "prathameshtawale",
+    "email": "prathameshtawale04@gmail.com",
+    "password_hash": "scrypt:32768:8:1$cVxuoTzsSOo6fdeb$f6db0fabd6ec400dafc80647fe522342818b5b2c6d47621f6e89aec51b25fc3daed522faae6752a6c90d6d7c7e58942ab65016954a6fcb0e50efc3fef564dd74",
+    "full_name": "Prathamesh Tawale"
+  },
+  {
+    "id": 6,
+    "username": "cinephile_54c49d83",
+    "email": "cinephile_54c49d83@example.com",
+    "password_hash": "scrypt:32768:8:1$GZupdlyJOEPKk1RG$04fa918cedb6ca0cbdff7a8a04dec9bdc81750b0caffb88304d69861d7865ca22dda4dea24a33cab6fdaf992f8c0953dbf73689c5cd2bdbe91c1033db641007b",
+    "full_name": "Test User"
+  },
+  {
+    "id": 7,
+    "username": "wrong_pw_3b029090",
+    "email": "wrong_pw_3b029090@example.com",
+    "password_hash": "scrypt:32768:8:1$eESSJE8VMvh9tBQS$3c9d72dc95f8cac0edc28da09504dc7ffb722e32fc49db4047c3e94f2c416a861ef2918930469e75e95814b07cfe53fadbca1f94273907b40c47c44805bef708",
+    "full_name": "Wrong Password User"
+  },
+  {
+    "id": 8,
+    "username": "cinephile_bdd583b6",
+    "email": "cinephile_bdd583b6@example.com",
+    "password_hash": "scrypt:32768:8:1$HjAKPGjfCSu4o0Ww$aea3fc7287e87d8d1c67d1df792ba6f0a804efcf65304246016b0c303f1527d2a51ebbbbeb6c48f919251b976240fe08c6d8c30a4263b4c2dd273d9223b2eba7",
+    "full_name": "Test User"
+  },
+  {
+    "id": 9,
+    "username": "wrong_pw_b977904b",
+    "email": "wrong_pw_b977904b@example.com",
+    "password_hash": "scrypt:32768:8:1$sdLxot6Gv2Kg3Pr8$aafe25ef4b5488c39545c3fbffee981383a58f96a71c6c49ed4e5caf16edffedc31016ce1afcff65934314a1402452c163b4a26b0a28c67ff789a1bf38061724",
+    "full_name": "Wrong Password User"
+  }
+]

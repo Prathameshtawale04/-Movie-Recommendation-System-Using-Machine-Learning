@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if is_user_recommendations %}
+    Recommended For You - MovieFlix
+  {% elif movie %}
+    Because You Watched {{ movie.title }} - MovieFlix
+  {% else %}
+    Movie Recommendations - MovieFlix
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="recommendations-page-container">
+  
+  <!-- Recommendation Header Banner -->
+  <header class="rec-header-banner">
+    <div class="rec-header-content">
+      <span class="rec-algorithm-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        AI INFORMATION RETRIEVAL ENGINE
+      </span>
+
+      {% if is_user_recommendations %}
+        <h1 class="rec-title">Recommended For You</h1>
+        {% if is_personalized %}
+          <p class="rec-description">
+            {{ reason }} These titles match the narrative themes, genres, and directors of movies you enjoyed.
+          </p>
+        {% else %}
+          <div class="cold-start-banner">
+            <p class="cold-start-text">
+              <strong>Start rating movies to improve your recommendations.</strong> Showing our highest-rated and trending films while we learn your tastes.
+            </p>
+          </div>
+        {% endif %}
+
+      {% elif movie %}
+        <h1 class="rec-title">Because You Watched <em>{{ movie.title }}</em></h1>
+        <p class="rec-description">
+          We computed vector cosine distances across movie overviews, genre matrices, and stylistic metadata to discover these top nearest neighbors.
+        </p>
+        <div class="rec-source-pill">
+          <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="source-link">
+            &larr; Return to {{ movie.title }} Details
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Recommendations Grid -->
+  <main class="rec-results-wrapper">
+    {% if recommendations %}
+      <div class="movie-grid-static">
+        {% for rec in recommendations %}
+          <article class="cinema-movie-card">
+            <div class="poster-container">
+              <img
+                src="{{ rec.poster_url }}"
+                alt="{{ rec.title }}"
+                class="card-img"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='/static/img/poster-fallback.svg';"
+              >
+              <div class="card-overlay-hover">
+                <div class="hover-top-row">
+                  <span class="hover-match-tag">{{ rec.match_percentage }}% Match</span>
+                  <span class="hover-year">{{ rec.release_date[:4] if rec.release_date else '' }}</span>
+                </div>
+                
+                <h4 class="hover-title">{{ rec.title }}</h4>
+
+                {% if rec.genres %}
+                  <div class="hover-genres">{{ rec.genres.split(',')[:2]|join(' • ') }}</div>
+                {% endif %}
+
+                <div class="hover-action-row">
+                  <a href="{{ url_for('movie_details', movie_id=rec.id) }}" class="btn-card-circle play-circle" title="View Details">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </a>
+
+                  {% if current_user %}
+                    <form action="{{ url_for('watchlist_add', movie_id=rec.id) }}" method="POST" class="inline-form">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <button type="submit" class="btn-card-circle add-circle" title="Add to Watchlist">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                      </button>
+                    </form>
+                  {% endif %}
+
+                  <a href="{{ url_for('recommendations_view', movie_id=rec.id) }}" class="btn-card-circle rec-circle" title="Find Similar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-caption">
+              <h3 class="card-caption-title">{{ rec.title }}</h3>
+              <div class="card-caption-meta">
+                <span class="caption-match">{{ rec.match_percentage }}% Match</span>
+                <span class="caption-year">{{ rec.release_date[:4] if rec.release_date else '' }}</span>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state-panel">
+        <div class="empty-icon">&#127916;</div>
+        <h3>No Recommendations Available</h3>
+        <p>Try exploring other titles or searching our movie catalog.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 1rem;">Browse Cinema</a>
+      </div>
+    {% endif %}
+  </main>
+
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ error_code }} - {{ error_title }} - MovieFlix{% endblock %}
+
+{% block content %}
+<main class="main-content" style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
+  <div class="empty-state" style="max-width: 600px;">
+    <div style="font-size: 5rem; font-weight: 900; color: var(--brand-red); line-height: 1; margin-bottom: 1rem;">
+      {{ error_code }}
+    </div>
+    <h1 class="empty-title">{{ error_title }}</h1>
+    <p class="empty-desc">
+      {{ error_message }}
+    </p>
+    <div style="margin-top: 2rem;">
+      <a href="{{ url_for('index') }}" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Return to Home Theater
+      </a>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}MovieFlix - Intelligent Movie Discovery & Recommendation{% endblock %}
+
+{% block content %}
+
+<!-- Layered Cinematic Hero Section -->
+{% if hero_movie %}
+<section class="hero-cinematic-stage" id="heroStage">
+  <div class="hero-backdrop-container" id="heroBackdrop" style="background-image: url('{{ hero_movie.backdrop_url if hero_movie.backdrop_url else hero_movie.poster_url }}');">
+    <div class="hero-vignette-layer"></div>
+    <div class="hero-bottom-gradient"></div>
+  </div>
+
+  <div class="hero-body-container" id="heroContent">
+    <div class="hero-badge-pill">
+      <span class="pulse-dot"></span> TOP SPOTLIGHT TODAY
+    </div>
+    
+    <h1 class="hero-main-title">{{ hero_movie.title }}</h1>
+    
+    <div class="hero-meta-row">
+      <span class="meta-rating-star">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        {{ "%.1f"|format(hero_movie.vote_average) }} / 10
+      </span>
+      <span class="meta-year">{{ hero_movie.release_date[:4] if hero_movie.release_date else 'Recent' }}</span>
+      <span class="meta-quality">HD</span>
+      {% if hero_movie.genres %}
+        <span class="meta-genres-tag">{{ hero_movie.genres.split(',')[0] }}</span>
+      {% endif %}
+    </div>
+
+    <p class="hero-synopsis">
+      {{ hero_movie.overview[:260] }}{% if hero_movie.overview|length > 260 %}...{% endif %}
+    </p>
+
+    <div class="hero-action-buttons">
+      <a href="{{ url_for('movie_details', movie_id=hero_movie.id) }}" class="btn btn-hero-play">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Explore Title
+      </a>
+
+      {% if current_user %}
+        {% if in_watchlist_hero %}
+          <form action="{{ url_for('watchlist_remove', movie_id=hero_movie.id) }}" method="POST" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-hero-watchlist active" title="Remove from Watchlist">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              In Watchlist
+            </button>
+          </form>
+        {% else %}
+          <form action="{{ url_for('watchlist_add', movie_id=hero_movie.id) }}" method="POST" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-hero-watchlist" title="Add to Watchlist">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add to Watchlist
+            </button>
+          </form>
+        {% endif %}
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-hero-watchlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Watchlist
+        </a>
+      {% endif %}
+
+      <a href="{{ url_for('recommendations_view', movie_id=hero_movie.id) }}" class="btn btn-hero-info">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Similar Films
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Scroll-Tied Content Rows Container -->
+<div class="scroll-content-container" id="browse">
+
+  <!-- Macro: Reusable Netflix-Style Movie Row -->
+  {% macro movie_row(section_id, section_title, section_subtitle, movies_list, view_all_url=None) %}
+  {% if movies_list %}
+  <section class="scroll-reveal-section" id="{{ section_id }}">
+    <div class="section-heading-bar">
+      <div class="heading-text">
+        <h2 class="section-title">{{ section_title }}</h2>
+        {% if section_subtitle %}
+          <p class="section-subtitle">{{ section_subtitle }}</p>
+        {% endif %}
+      </div>
+      {% if view_all_url %}
+        <a href="{{ view_all_url }}" class="section-see-all">See All &rarr;</a>
+      {% endif %}
+    </div>
+
+    <div class="carousel-track-wrapper">
+      <button class="carousel-arrow arrow-left" aria-label="Scroll Left" onclick="scrollTrack('{{ section_id }}-track', -600)">
+        &#10094;
+      </button>
+
+      <div class="horizontal-scroll-track" id="{{ section_id }}-track">
+        {% for movie in movies_list %}
+        <article class="cinema-movie-card">
+          <div class="poster-container">
+            <img
+              src="{{ movie.poster_url }}"
+              alt="{{ movie.title }}"
+              class="card-img"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='/static/img/poster-fallback.svg';"
+            >
+            <div class="card-overlay-hover">
+              <div class="hover-top-row">
+                <span class="hover-match-tag">
+                  {% if movie.match_percentage %}
+                    {{ movie.match_percentage }}% Match
+                  {% elif movie.vote_average %}
+                    ★ {{ "%.1f"|format(movie.vote_average) }}
+                  {% else %}
+                    ★ 8.2
+                  {% endif %}
+                </span>
+                <span class="hover-year">{{ movie.release_date[:4] if movie.release_date else '2024' }}</span>
+              </div>
+              
+              <h4 class="hover-title">{{ movie.title }}</h4>
+
+              {% if movie.genres %}
+                <div class="hover-genres">{{ movie.genres.split(',')[:2]|join(' • ') }}</div>
+              {% endif %}
+
+              <div class="hover-action-row">
+                <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn-card-circle play-circle" title="View Details">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </a>
+                
+                {% if current_user %}
+                  <form action="{{ url_for('watchlist_add', movie_id=movie.id) }}" method="POST" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn-card-circle add-circle" title="Add to Watchlist">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                  </form>
+                {% else %}
+                  <a href="{{ url_for('login') }}" class="btn-card-circle add-circle" title="Sign in to save">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  </a>
+                {% endif %}
+
+                <a href="{{ url_for('recommendations_view', movie_id=movie.id) }}" class="btn-card-circle rec-circle" title="Find Similar">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="card-caption">
+            <h3 class="card-caption-title">{{ movie.title }}</h3>
+            <div class="card-caption-meta">
+              <span class="caption-star">★ {{ "%.1f"|format(movie.vote_average) if movie.vote_average else '7.8' }}</span>
+              <span class="caption-year">{{ movie.release_date[:4] if movie.release_date else '' }}</span>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <button class="carousel-arrow arrow-right" aria-label="Scroll Right" onclick="scrollTrack('{{ section_id }}-track', 600)">
+        &#10095;
+      </button>
+    </div>
+  </section>
+  {% endif %}
+  {% endmacro %}
+
+  <!-- 1. Personalized Recommendations Row (For Authenticated Users) -->
+  {% if current_user and user_recs_data and user_recs_data.recommendations %}
+    {{ movie_row(
+        "rec-for-you",
+        "Recommended For You",
+        user_recs_data.reason,
+        user_recs_data.recommendations,
+        url_for('user_recommendations')
+    ) }}
+  {% endif %}
+
+  <!-- 2. User Watchlist Preview (If user has items) -->
+  {% if current_user and user_watchlist_preview %}
+    {{ movie_row(
+        "my-watchlist-preview",
+        "My Watchlist",
+        "Saved titles waiting on your reel",
+        user_watchlist_preview,
+        url_for('watchlist')
+    ) }}
+  {% endif %}
+
+  <!-- 3. Trending Now -->
+  {{ movie_row(
+      "trending-now",
+      "Trending Now",
+      "Films generating maximum buzz across the streaming stratosphere",
+      trending
+  ) }}
+
+  <!-- 4. Top Rated Cinema -->
+  {{ movie_row(
+      "top-rated",
+      "Top Rated Cinema",
+      "Critically acclaimed masterpieces with top audience scores",
+      top_rated
+  ) }}
+
+  <!-- 5. Action & High Octane -->
+  {{ movie_row(
+      "action-cinema",
+      "Action & Adventure",
+      "Explosive thrillers, pulse-pounding chases, and epic journeys",
+      action
+  ) }}
+
+  <!-- 6. Sci-Fi & Mind Bending -->
+  {{ movie_row(
+      "scifi-cinema",
+      "Sci-Fi & Speculative Fiction",
+      "Deep space odysseys, dystopian realities, and cerebral futures",
+      scifi
+  ) }}
+
+  <!-- 7. Drama & Human Stories -->
+  {{ movie_row(
+      "drama-cinema",
+      "Captivating Drama",
+      "Emotionally resonant storytelling and poignant performances",
+      drama
+  ) }}
+
+  <!-- 8. Comedy & Lighthearted -->
+  {{ movie_row(
+      "comedy-cinema",
+      "Comedy & Feel-Good",
+      "Witty banter, laugh-out-loud antics, and cheerful romps",
+      comedy
+  ) }}
+
+</div>
+
+{% endblock %}
